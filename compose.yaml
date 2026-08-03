@@ -1,0 +1,100 @@
+services:
+  collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tech-trends-collector:dev
+    init: true
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      DATA_DIR: /app/data
+      HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+    entrypoint:
+      - python
+      - -m
+      - tech_trends.cli
+    command:
+      - --technology
+      - python
+      - --days
+      - "7"
+      - --page-size
+      - "100"
+
+  github-collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tech-trends-collector:dev
+    init: true
+    env_file:
+      - .env
+    environment:
+      DATA_DIR: /app/data
+      HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+    entrypoint:
+      - python
+      - -m
+      - tech_trends.github_cli
+    command:
+      - --technology
+      - python
+      - --days
+      - "7"
+      - --page-size
+      - "100"
+
+  pypi-collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tech-trends-collector:dev
+    init: true
+    environment:
+      DATA_DIR: /app/data
+      HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+    entrypoint:
+      - python
+      - -m
+      - tech_trends.pypi_cli
+    command:
+      - --package
+      - pandas
+
+  pypi-downloads-collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tech-trends-collector:dev
+    init: true
+    env_file:
+      - .env
+    environment:
+      DATA_DIR: /app/data
+      GCP_PROJECT_ID: ${GCP_PROJECT_ID}
+      GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/adc.json
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+      - type: bind
+        source: ${GCP_ADC_PATH}
+        target: /var/secrets/google/adc.json
+        read_only: true
+    entrypoint:
+      - python
+      - -m
+      - tech_trends.pypi_downloads_cli
+    command:
+      - --package
+      - pandas
+      - --days
+      - "7"

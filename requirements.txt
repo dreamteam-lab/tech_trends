@@ -1,0 +1,8 @@
+httpx>=0.28,<0.29
+pydantic>=2.10,<3
+pydantic-settings>=2.7,<3
+pytest>=8,<9
+pytest-asyncio>=0.25,<2
+respx>=0.22,<1
+ruff>=0.9,<1
+google-cloud-bigquery>=3,<4

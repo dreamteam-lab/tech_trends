@@ -1,0 +1,1 @@
+"""TechTrend Monitor application package."""
