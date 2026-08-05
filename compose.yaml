@@ -98,3 +98,44 @@ services:
       - pandas
       - --days
       - "7"
+
+  npm-collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tech-trends-collector:dev
+    init: true
+    environment:
+      DATA_DIR: /app/data
+      HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+    entrypoint:
+      - python
+      - -m
+      - tech_trends.npm_cli
+    command:
+      - --package
+      - react
+  npm-downloads-collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: tech-trends-collector:dev
+    init: true
+    environment:
+      DATA_DIR: /app/data
+      HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
+    volumes:
+      - ./src:/app/src:ro
+      - ./data:/app/data
+    entrypoint:
+      - python
+      - -m
+      - tech_trends.npm_downloads_cli
+    command:
+      - --package
+      - react
+      - --days
+      - "7"
