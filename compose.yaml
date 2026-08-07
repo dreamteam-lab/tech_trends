@@ -99,6 +99,7 @@ services:
       - --days
       - "7"
 
+  stack-overflow-collector:
   npm-collector:
     build:
       context: .
@@ -108,12 +109,21 @@ services:
     environment:
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
+      STACK_EXCHANGE_KEY: ${STACK_EXCHANGE_KEY:-}
     volumes:
       - ./src:/app/src:ro
       - ./data:/app/data
     entrypoint:
       - python
       - -m
+      - tech_trends.stack_overflow_cli
+    command:
+      - --tag
+      - python
+      - --days
+      - "7"
+      - --page-size
+      - "100"
       - tech_trends.npm_cli
     command:
       - --package
