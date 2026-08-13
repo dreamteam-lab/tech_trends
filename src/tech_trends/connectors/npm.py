@@ -1,18 +1,20 @@
+"""Connector for npm package metadata."""
+
 from typing import Any
 from urllib.parse import quote
 
 import httpx
 
+BASE_URL = "https://registry.npmjs.org"
 
-BASE_URL = "https://pypi.org"
 
-
-def fetch_project_metadata(
+def fetch_package_metadata(
     *,
     package_name: str,
 ) -> tuple[dict[str, Any], dict[str, str | None]]:
+    """Fetch complete metadata for one public npm package."""
 
-    normalized_package_name = package_name.strip()
+    normalized_package_name = package_name.strip().lower()
 
     if not normalized_package_name:
         raise ValueError("package_name must not be empty")
@@ -23,7 +25,7 @@ def fetch_project_metadata(
     )
 
     response = httpx.get(
-        f"{BASE_URL}/pypi/{encoded_package_name}/json",
+        f"{BASE_URL}/{encoded_package_name}",
         headers={
             "Accept": "application/json",
             "User-Agent": "tech-trends-collector",
@@ -37,8 +39,8 @@ def fetch_project_metadata(
 
     response_metadata = {
         "etag": response.headers.get("etag"),
-        "last_serial": response.headers.get("x-pypi-last-serial"),
         "cache_control": response.headers.get("cache-control"),
+        "last_modified": response.headers.get("last-modified"),
     }
 
     return data, response_metadata
