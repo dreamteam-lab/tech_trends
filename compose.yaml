@@ -209,7 +209,7 @@ services:
       - --webui-port
       - "8080"
     ports:
-      - "8080:8080"   # Spark Master UI
+      - "${SPARK_UI_PORT:-8080}:8080"   # Spark Master UI
       - "7077:7077"   # Spark master endpoint (опционально, для внешнего spark-submit)
     volumes:
       - ./spark/jobs:/opt/spark/jobs
