@@ -1,0 +1,20 @@
+{
+  "identities": [
+    {
+      "name": "tech-trends",
+      "credentials": [
+        {
+          "accessKey": "__SEAWEEDFS_ACCESS_KEY__",
+          "secretKey": "__SEAWEEDFS_SECRET_KEY__"
+        }
+      ],
+      "actions": [
+        "Admin",
+        "Read",
+        "Write",
+        "List",
+        "Tagging"
+      ]
+    }
+  ]
+}
