@@ -1,0 +1,16 @@
+# Единый стандарт line endings для всего репозитория — LF.
+# Проект целиком выполняется в Linux-контейнерах, и часть скриптов
+# (entrypoint-скрипты SeaweedFS, будущие shell-джобы) физически ломается
+# при CRLF (busybox/sh не понимает \r в shebang). Правило действует
+# независимо от локальных настроек git/редактора у любого участника команды.
+* text=auto eol=lf
+
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.py text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.conf text eol=lf
+*.ini text eol=lf

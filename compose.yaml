@@ -12,6 +12,7 @@ services:
     volumes:
       - ./src:/app/src:ro
       - ./data:/app/data
+      - ./tests:/app/tests:ro
     entrypoint:
       - python
       - -m
