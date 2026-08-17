@@ -26,9 +26,6 @@ services:
       - "100"
 
   github-collector:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: tech-trends-collector:dev
     init: true
     env_file:
@@ -52,9 +49,6 @@ services:
       - "100"
 
   pypi-collector:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: tech-trends-collector:dev
     init: true
     environment:
@@ -72,9 +66,6 @@ services:
       - pandas
 
   pypi-downloads-collector:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: tech-trends-collector:dev
     init: true
     env_file:
@@ -101,9 +92,6 @@ services:
       - "7"
 
   stack-overflow-collector:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: tech-trends-collector:dev
     init: true
     environment:
@@ -126,9 +114,6 @@ services:
       - "100"
 
   npm-collector:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: tech-trends-collector:dev
     init: true
     environment:
@@ -146,9 +131,6 @@ services:
       - react
 
   npm-downloads-collector:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: tech-trends-collector:dev
     init: true
     environment:
