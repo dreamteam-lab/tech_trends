@@ -1,3 +1,10 @@
+x-raw-storage-environment: &raw-storage-environment
+  RAW_STORAGE_BACKEND: ${RAW_STORAGE_BACKEND:-local}
+  S3_ENDPOINT_URL: ${S3_ENDPOINT_URL:-http://seaweedfs:8333}
+  S3_BRONZE_BUCKET: ${S3_BRONZE_BUCKET:-tech-trends-bronze}
+  AWS_ACCESS_KEY_ID: ${SEAWEEDFS_ACCESS_KEY:-}
+  AWS_SECRET_ACCESS_KEY: ${SEAWEEDFS_SECRET_KEY:-}
+
 services:
   collector:
     build:
@@ -6,6 +13,7 @@ services:
     image: tech-trends-collector:dev
     init: true
     environment:
+      <<: *raw-storage-environment
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
@@ -31,6 +39,7 @@ services:
     env_file:
       - .env
     environment:
+      <<: *raw-storage-environment
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
     volumes:
@@ -52,6 +61,7 @@ services:
     image: tech-trends-collector:dev
     init: true
     environment:
+      <<: *raw-storage-environment
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
     volumes:
@@ -71,6 +81,7 @@ services:
     env_file:
       - .env
     environment:
+      <<: *raw-storage-environment
       DATA_DIR: /app/data
       GCP_PROJECT_ID: ${GCP_PROJECT_ID}
       GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/adc.json
@@ -95,6 +106,7 @@ services:
     image: tech-trends-collector:dev
     init: true
     environment:
+      <<: *raw-storage-environment
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
       STACK_EXCHANGE_KEY: ${STACK_EXCHANGE_KEY:-}
@@ -117,6 +129,7 @@ services:
     image: tech-trends-collector:dev
     init: true
     environment:
+      <<: *raw-storage-environment
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
     volumes:
@@ -134,6 +147,7 @@ services:
     image: tech-trends-collector:dev
     init: true
     environment:
+      <<: *raw-storage-environment
       DATA_DIR: /app/data
       HTTP_TIMEOUT_SECONDS: ${HTTP_TIMEOUT_SECONDS:-20}
     volumes:
@@ -161,6 +175,7 @@ services:
     ports:
       - "8333:8333"   # S3 API — используется контейнерами и для локальной диагностики (aws-cli/mc)
       - "9333:9333"   # Master UI — диагностический интерфейс SeaweedFS (статус кластера, volumes)
+      - "8888:8888"   # Filer UI — просмотр бакетов и файлов
     volumes:
       - seaweedfs-data:/data
     healthcheck:

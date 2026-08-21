@@ -51,6 +51,10 @@ docker compose run --rm npm-downloads-collector --package react --days 7
 
 docker compose run --rm npm-downloads-collector --package "@nestjs/core" --days 7
 
-# Запуск тестов
+# Запуск тестов для коннекторов
 
 docker compose run --rm --entrypoint python collector -m pytest tests/connectors -v
+
+# Запуск тестов хранилища
+
+docker compose run --rm --entrypoint python collector -m pytest tests/storage/test_raw.py -v
